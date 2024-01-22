@@ -56,7 +56,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon:
 @Composable
 fun App(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    var searchedWord = remember { mutableStateOf("") }
+    val searchedWord = remember { mutableStateOf("") }
 
     val items = listOf(
         Screen.Search,

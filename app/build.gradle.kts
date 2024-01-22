@@ -76,4 +76,5 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.0.5")
     implementation("androidx.compose.ui:ui-tooling:1.0.5")
     implementation("androidx.navigation:navigation-common-ktx:2.7.6")
+    implementation("com.squareup.okhttp3:okhttp:3.10.0")
 }
