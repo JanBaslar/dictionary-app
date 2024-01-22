@@ -13,11 +13,12 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -38,8 +39,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DictionaryTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     App()
                 }
@@ -56,6 +56,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon:
 @Composable
 fun App(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+    var searchedWord = remember { mutableStateOf("") }
 
     val items = listOf(
         Screen.Search,
@@ -87,7 +88,7 @@ fun App(modifier: Modifier = Modifier) {
         }
     ) {innerPadding ->
         NavHost(navController, startDestination = Screen.Search.route, Modifier.padding(innerPadding)) {
-            composable(Screen.Search.route) { SearchScreen(navController) }
+            composable(Screen.Search.route) { SearchScreen(navController, searchedWord) }
             composable(Screen.History.route) { HistoryScreen(navController) }
         }
     }
