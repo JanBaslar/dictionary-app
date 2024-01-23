@@ -29,6 +29,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import cz.janbaslar.dictionary.data.models.ApiResponse
 import cz.janbaslar.dictionary.ui.theme.DictionaryTheme
 import cz.janbaslar.dictionary.ui.viewmodels.HistoryScreen
 import cz.janbaslar.dictionary.ui.viewmodels.SearchScreen
@@ -57,6 +58,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon:
 fun App(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val searchedWord = remember { mutableStateOf("") }
+    val lastApiResponse = remember { mutableStateOf(ApiResponse.empty()) }
 
     val items = listOf(
         Screen.Search,
@@ -86,9 +88,13 @@ fun App(modifier: Modifier = Modifier) {
                 }
             }
         }
-    ) {innerPadding ->
-        NavHost(navController, startDestination = Screen.Search.route, Modifier.padding(innerPadding)) {
-            composable(Screen.Search.route) { SearchScreen(navController, searchedWord) }
+    ) { innerPadding ->
+        NavHost(
+            navController,
+            startDestination = Screen.Search.route,
+            Modifier.padding(innerPadding)
+        ) {
+            composable(Screen.Search.route) { SearchScreen(navController, searchedWord, lastApiResponse) }
             composable(Screen.History.route) { HistoryScreen(navController) }
         }
     }

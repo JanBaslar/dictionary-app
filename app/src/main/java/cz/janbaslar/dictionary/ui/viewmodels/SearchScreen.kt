@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -26,38 +25,45 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import cz.janbaslar.dictionary.R
+import cz.janbaslar.dictionary.data.models.ApiResponse
 import cz.janbaslar.dictionary.service.FreeDictionaryApiService
 import cz.janbaslar.dictionary.ui.components.SearchButton
+import cz.janbaslar.dictionary.ui.components.ShowWord
 
 @Composable
-fun SearchScreen(navController: NavController, lastWord: MutableState<String>) {
+fun SearchScreen(
+    navController: NavController,
+    lastWord: MutableState<String>,
+    lastApiResponse: MutableState<ApiResponse>
+) {
     var word by remember { lastWord }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val freeDictionaryApiService = FreeDictionaryApiService();
+    val freeDictionaryApiService = FreeDictionaryApiService()
 
-    var callResult by remember { mutableStateOf("Not called yet") }
+    var apiResponse by remember { lastApiResponse }
 
     fun searchWord() {
         keyboardController?.hide()
-        freeDictionaryApiService.getWordDefinition(word, object : FreeDictionaryApiService.DictionaryCallback {
-            override fun onSuccess(result: String) {
-                // Handle success
-                callResult = result;
-            }
+        freeDictionaryApiService.getWordDefinition(
+            word,
+            object : FreeDictionaryApiService.DictionaryCallback {
+                override fun onSuccess(result: ApiResponse) {
+                    apiResponse = result;
+                    word = "";
+                }
 
-            override fun onFailure(error: String) {
-                // Handle failure
-                callResult = error
-            }
-        })
+                override fun onFailure(error: ApiResponse) {
+                    apiResponse = error
+                }
+            })
     }
 
-    Column {
+    Column(modifier = Modifier.padding(16.dp)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(96.dp)
-                .padding(16.dp)
+                .height(80.dp)
+                .padding(bottom = 16.dp)
         ) {
             TextField(
                 value = word,
@@ -74,7 +80,7 @@ fun SearchScreen(navController: NavController, lastWord: MutableState<String>) {
                     }
                 ),
                 textStyle = TextStyle(
-                    fontSize = 24.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier
@@ -85,7 +91,7 @@ fun SearchScreen(navController: NavController, lastWord: MutableState<String>) {
 
             SearchButton(onSearch = { searchWord() })
         }
-        Text(callResult)
+        ShowWord(response = apiResponse)
     }
 }
 
