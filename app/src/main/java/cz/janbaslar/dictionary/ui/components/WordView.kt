@@ -2,25 +2,35 @@ package cz.janbaslar.dictionary.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import cz.janbaslar.dictionary.data.models.ApiResponse
+import cz.janbaslar.dictionary.data.models.WordDefinition
 
 @Composable
 fun ShowWord(response: ApiResponse) {
@@ -32,9 +42,7 @@ fun ShowWord(response: ApiResponse) {
                 error = false
             )
         } else {
-            response.content?.let {
-                Text(it.word)
-            }
+            response.content?.let { WordPresentation(it) }
         }
     } else {
         if (response.wordNotFound()) {
@@ -47,7 +55,7 @@ fun ShowWord(response: ApiResponse) {
             IconWithText(
                 text = response.getErrorMessage(),
                 icon = Icons.Filled.Error,
-                error = false
+                error = true
             )
         }
     }
@@ -58,7 +66,7 @@ fun IconWithText(text: String, icon: ImageVector, error: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp),
+            .padding(4.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -67,16 +75,77 @@ fun IconWithText(text: String, icon: ImageVector, error: Boolean) {
             contentDescription = "Icon",
             tint = if (error) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surfaceTint,
             modifier = Modifier
-                .size(72.dp)
+                .size(64.dp)
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = text,
             style = MaterialTheme.typography.titleLarge,
             color = if (error) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surfaceTint,
             modifier = Modifier
                 .wrapContentSize(align = Alignment.Center)
-                .padding(bottom = 16.dp)
         )
+    }
+}
+
+@Composable
+fun WordPresentation(definition: WordDefinition) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(definition.word, style = MaterialTheme.typography.displaySmall)
+                Button(onClick = { /* Handle button click */ }) {
+                    Icon(Icons.Filled.Star, contentDescription = "Shine like a Star")
+                }
+            }
+        }
+
+        definition.meanings.forEach { meaning ->
+            item {
+                Column {
+                    Text(
+                        meaning.partOfSpeech, style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(bottom = 8.dp, top = 16.dp)
+                    )
+                    meaning.definitions.forEach { def ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp)
+                                .shadow(4.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                            ) {
+                                Text(
+                                    def.definition,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                                if (def.example != null) {
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        "Example: ${def.example}",
+                                        style = TextStyle(
+                                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                            fontStyle = FontStyle.Italic
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
