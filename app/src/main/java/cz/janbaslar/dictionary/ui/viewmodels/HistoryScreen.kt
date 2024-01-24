@@ -2,9 +2,9 @@ package cz.janbaslar.dictionary.ui.viewmodels
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import cz.janbaslar.dictionary.service.SharedPreferencesService
 
 @Composable
-fun HistoryScreen(navController: NavController) {
+fun HistoryScreen(sharedPreferencesService: SharedPreferencesService) {
     Text("History screen")
 }

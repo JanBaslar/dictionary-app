@@ -7,12 +7,12 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -30,9 +29,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cz.janbaslar.dictionary.data.models.ApiResponse
+import cz.janbaslar.dictionary.service.SharedPreferencesService
 import cz.janbaslar.dictionary.ui.theme.DictionaryTheme
 import cz.janbaslar.dictionary.ui.viewmodels.HistoryScreen
-import cz.janbaslar.dictionary.ui.viewmodels.SearchScreen
+import cz.janbaslar.dictionary.ui.viewmodels.SavedScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    App()
+                    App(SharedPreferencesService(this.application.applicationContext))
                 }
             }
         }
@@ -51,18 +51,18 @@ class MainActivity : ComponentActivity() {
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
     object Search : Screen("search_screen", R.string.search, Icons.Filled.Search)
-    object History : Screen("history_screen", R.string.history, Icons.Filled.Star)
+    object Saved : Screen("saved_screen", R.string.saved, Icons.Filled.Bookmarks)
 }
 
 @Composable
-fun App(modifier: Modifier = Modifier) {
+fun App(sharedPreferencesService: SharedPreferencesService) {
     val navController = rememberNavController()
     val searchedWord = remember { mutableStateOf("") }
     val lastApiResponse = remember { mutableStateOf(ApiResponse.empty()) }
 
     val items = listOf(
         Screen.Search,
-        Screen.History,
+        Screen.Saved,
     )
 
     Scaffold(
@@ -95,22 +95,13 @@ fun App(modifier: Modifier = Modifier) {
             Modifier.padding(innerPadding)
         ) {
             composable(Screen.Search.route) {
-                SearchScreen(
-                    navController,
+                SavedScreen(
+                    sharedPreferencesService,
                     searchedWord,
                     lastApiResponse
                 )
             }
-            composable(Screen.History.route) { HistoryScreen(navController) }
+            composable(Screen.Saved.route) { HistoryScreen(sharedPreferencesService) }
         }
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AppPreview() {
-    DictionaryTheme {
-        App()
     }
 }

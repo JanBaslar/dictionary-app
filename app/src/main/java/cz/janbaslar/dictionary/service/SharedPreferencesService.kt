@@ -19,7 +19,7 @@ class SharedPreferencesService(context: Context) {
         sharedPreferences.edit().putString("objectsList", json).apply()
     }
 
-    fun getSaveDefinitions(): List<SimpleWordDefinition> {
+    fun getSavedDefinitions(): List<SimpleWordDefinition> {
         val json = sharedPreferences.getString("objectsList", null)
         return if (json != null) {
             val type = object : TypeToken<List<SimpleWordDefinition>>() {}.type

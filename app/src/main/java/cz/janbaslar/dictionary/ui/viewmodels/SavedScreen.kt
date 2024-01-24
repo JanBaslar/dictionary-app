@@ -27,17 +27,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import cz.janbaslar.dictionary.R
 import cz.janbaslar.dictionary.data.models.ApiResponse
 import cz.janbaslar.dictionary.service.FreeDictionaryApiService
+import cz.janbaslar.dictionary.service.SharedPreferencesService
 import cz.janbaslar.dictionary.ui.components.SearchButton
 import cz.janbaslar.dictionary.ui.components.ShowWord
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(
-    navController: NavController,
+fun SavedScreen(
+    sharedPreferencesService: SharedPreferencesService,
     lastWord: MutableState<String>,
     lastApiResponse: MutableState<ApiResponse>
 ) {
@@ -96,7 +96,7 @@ fun SearchScreen(
                 )
                 SearchButton(onSearch = { searchWord() })
             }
-            ShowWord(response = apiResponse)
+            ShowWord(apiResponse, sharedPreferencesService)
         }
     }
 }
