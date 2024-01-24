@@ -24,15 +24,15 @@ class ApiResponse private constructor(
     }
 
     fun isSuccessful(): Boolean {
-        return success;
+        return success
     }
 
     fun wordNotFound(): Boolean {
-        return !success && notFound;
+        return !success && notFound
     }
 
     fun isEmpty(): Boolean {
-        return success && notFound;
+        return success && notFound
     }
 
     fun getErrorMessage() : String {

@@ -15,6 +15,7 @@ import java.io.IOException
 class FreeDictionaryApiService {
     private val client = OkHttpClient()
     private val gson = Gson()
+
     interface DictionaryCallback {
         fun onSuccess(result: ApiResponse)
         fun onFailure(error: ApiResponse)
@@ -35,7 +36,10 @@ class FreeDictionaryApiService {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         try {
-                            val wordDefinitions: List<WordDefinition> = gson.fromJson(response.body()?.string(), object : TypeToken<List<WordDefinition>>() {}.type)
+                            val wordDefinitions: List<WordDefinition> = gson.fromJson(
+                                response.body()?.string(),
+                                object : TypeToken<List<WordDefinition>>() {}.type
+                            )
                             callback.onSuccess(ApiResponse.success(wordDefinitions.first()))
                         } catch (e: JsonSyntaxException) {
                             callback.onSuccess(ApiResponse.fail("Unexpected response from API!"))

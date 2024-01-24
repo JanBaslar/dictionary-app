@@ -75,7 +75,7 @@ fun App(sharedPreferencesService: SharedPreferencesService) {
                     BottomNavigationItem(
                         icon = { Icon(screen.icon, contentDescription = screen.route) },
                         label = { Text(stringResource(screen.resourceId)) },
-                        selected = currentDestination?.hierarchy?.any() { it.route == screen.route } == true,
+                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {
                             navController.navigate(screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {

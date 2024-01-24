@@ -54,8 +54,8 @@ fun SearchScreen(
             word,
             object : FreeDictionaryApiService.DictionaryCallback {
                 override fun onSuccess(result: ApiResponse) {
-                    apiResponse = result;
-                    word = "";
+                    apiResponse = result
+                    word = ""
                 }
 
                 override fun onFailure(error: ApiResponse) {
