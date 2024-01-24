@@ -44,7 +44,7 @@ class FreeDictionaryApiService {
                         callback.onFailure(ApiResponse.fail("API response has empty body!"))
                     }
                 } else {
-                    callback.onFailure(ApiResponse.wordNotFound("Word '$word' not found!"))
+                    callback.onFailure(ApiResponse.wordNotFound("Word \"$word\" not found!"))
                 }
             }
         })

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 fun SearchButton(onSearch: () -> Unit) {
     FilledIconButton(
         onClick = onSearch,
-        shape = RoundedCornerShape(5.dp),
+        shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxHeight()
             .padding(top = 8.dp)

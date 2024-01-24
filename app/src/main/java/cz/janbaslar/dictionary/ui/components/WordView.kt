@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Search
@@ -101,7 +101,7 @@ fun saveWord(definition: WordDefinition, sharedPreferencesService: SharedPrefere
     )
 
     if (!savedDefinitions.contains(simpleWordDefinition)) {
-        val updatedDefinitions = savedDefinitions.plus(simpleWordDefinition)
+        val updatedDefinitions = listOf(simpleWordDefinition).plus(savedDefinitions)
         sharedPreferencesService.saveDefinitions(updatedDefinitions)
     }
 }
@@ -130,7 +130,7 @@ fun WordPresentation(
                         contentColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
-                    Icon(Icons.Filled.Bookmark, contentDescription = "Save the word")
+                    Icon(Icons.Filled.BookmarkBorder, contentDescription = "Save the word")
                 }
             }
         }
