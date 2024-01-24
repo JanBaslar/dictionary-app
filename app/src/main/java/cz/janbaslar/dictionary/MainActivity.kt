@@ -58,6 +58,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon:
 fun App(sharedPreferencesService: SharedPreferencesService) {
     val navController = rememberNavController()
     val searchedWord = remember { mutableStateOf("") }
+    val savedWord = remember { mutableStateOf("") }
     val lastApiResponse = remember { mutableStateOf(ApiResponse.empty()) }
 
     val items = listOf(
@@ -101,7 +102,7 @@ fun App(sharedPreferencesService: SharedPreferencesService) {
                     lastApiResponse
                 )
             }
-            composable(Screen.Saved.route) { SavedScreen(sharedPreferencesService) }
+            composable(Screen.Saved.route) { SavedScreen(sharedPreferencesService, savedWord) }
         }
     }
 }

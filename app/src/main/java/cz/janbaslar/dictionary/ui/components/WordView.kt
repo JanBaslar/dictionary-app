@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.BookmarkAdd
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Search
@@ -26,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -61,33 +58,6 @@ fun ShowWord(response: ApiResponse, sharedPreferencesService: SharedPreferencesS
                 error = true
             )
         }
-    }
-}
-
-@Composable
-fun IconWithText(text: String, icon: ImageVector, error: Boolean) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(4.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = "Icon",
-            tint = if (error) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surfaceTint,
-            modifier = Modifier
-                .size(64.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleLarge,
-            color = if (error) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surfaceTint,
-            modifier = Modifier
-                .wrapContentSize(align = Alignment.Center)
-        )
     }
 }
 
@@ -130,7 +100,7 @@ fun WordPresentation(
                         contentColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
-                    Icon(Icons.Filled.BookmarkBorder, contentDescription = "Save the word")
+                    Icon(Icons.Filled.BookmarkAdd, contentDescription = "Save the word")
                 }
             }
         }
