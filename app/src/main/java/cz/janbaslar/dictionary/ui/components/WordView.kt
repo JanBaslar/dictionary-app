@@ -16,9 +16,10 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -88,6 +89,10 @@ fun IconWithText(text: String, icon: ImageVector, error: Boolean) {
     }
 }
 
+fun saveWord(definition: WordDefinition) {
+
+}
+
 @Composable
 fun WordPresentation(definition: WordDefinition) {
     LazyColumn(
@@ -102,7 +107,13 @@ fun WordPresentation(definition: WordDefinition) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(definition.word, style = MaterialTheme.typography.displaySmall)
-                Button(onClick = { /* Handle button click */ }) {
+                FilledIconButton(
+                    onClick = { },
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
+                ) {
                     Icon(Icons.Filled.Star, contentDescription = "Shine like a Star")
                 }
             }

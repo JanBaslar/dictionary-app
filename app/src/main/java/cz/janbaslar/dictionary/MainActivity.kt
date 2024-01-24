@@ -6,13 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
+import androidx.compose.material3.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,12 +67,12 @@ fun App(modifier: Modifier = Modifier) {
 
     Scaffold(
         bottomBar = {
-            BottomNavigation {
+            BottomAppBar {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 items.forEach { screen ->
                     BottomNavigationItem(
-                        icon = { Icon(screen.icon, contentDescription = null) },
+                        icon = { Icon(screen.icon, contentDescription = screen.route) },
                         label = { Text(stringResource(screen.resourceId)) },
                         selected = currentDestination?.hierarchy?.any() { it.route == screen.route } == true,
                         onClick = {
@@ -94,10 +94,17 @@ fun App(modifier: Modifier = Modifier) {
             startDestination = Screen.Search.route,
             Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Search.route) { SearchScreen(navController, searchedWord, lastApiResponse) }
+            composable(Screen.Search.route) {
+                SearchScreen(
+                    navController,
+                    searchedWord,
+                    lastApiResponse
+                )
+            }
             composable(Screen.History.route) { HistoryScreen(navController) }
         }
     }
+
 }
 
 @Preview(showBackground = true)
