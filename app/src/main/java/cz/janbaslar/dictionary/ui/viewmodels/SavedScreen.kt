@@ -36,7 +36,7 @@ import cz.janbaslar.dictionary.ui.components.ShowWord
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SavedScreen(
+fun SearchScreen(
     sharedPreferencesService: SharedPreferencesService,
     lastWord: MutableState<String>,
     lastApiResponse: MutableState<ApiResponse>

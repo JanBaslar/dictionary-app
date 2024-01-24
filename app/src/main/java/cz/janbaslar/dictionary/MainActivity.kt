@@ -31,8 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import cz.janbaslar.dictionary.data.models.ApiResponse
 import cz.janbaslar.dictionary.service.SharedPreferencesService
 import cz.janbaslar.dictionary.ui.theme.DictionaryTheme
-import cz.janbaslar.dictionary.ui.viewmodels.HistoryScreen
 import cz.janbaslar.dictionary.ui.viewmodels.SavedScreen
+import cz.janbaslar.dictionary.ui.viewmodels.SearchScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,13 +95,13 @@ fun App(sharedPreferencesService: SharedPreferencesService) {
             Modifier.padding(innerPadding)
         ) {
             composable(Screen.Search.route) {
-                SavedScreen(
+                SearchScreen(
                     sharedPreferencesService,
                     searchedWord,
                     lastApiResponse
                 )
             }
-            composable(Screen.Saved.route) { HistoryScreen(sharedPreferencesService) }
+            composable(Screen.Saved.route) { SavedScreen(sharedPreferencesService) }
         }
     }
 }

@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 import cz.janbaslar.dictionary.service.SharedPreferencesService
 
 @Composable
-fun HistoryScreen(sharedPreferencesService: SharedPreferencesService) {
+fun SavedScreen(sharedPreferencesService: SharedPreferencesService) {
     Text("History screen")
 }
